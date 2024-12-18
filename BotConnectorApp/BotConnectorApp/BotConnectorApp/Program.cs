@@ -3,6 +3,8 @@ using BotConnectorApp.Service.Models;
 using Microsoft.Bot.Connector.DirectLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace BotConnectorApp
 {
@@ -13,7 +15,6 @@ namespace BotConnectorApp
         private static AppSettings _appSettings;
         private static string _endConversationMessage;
         private static string _userDisplayName = "You";
-
 
         public static void Main(string[] args)
         {
@@ -39,9 +40,16 @@ namespace BotConnectorApp
                 Console.Read();
                 Environment.Exit(0);
             }
-            StartConversation().Wait();
+
+            CreateHostBuilder(args).Build().Run();
         }
 
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
 
         public static async Task StartConversation()
         {
