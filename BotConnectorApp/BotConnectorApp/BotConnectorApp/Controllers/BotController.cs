@@ -22,7 +22,7 @@ namespace BotConnectorApp.Controllers
         }
 
         [HttpPost("sendMessage")]
-        public async Task<IActionResult> SendMessage([FromBody] UserMessage userMessage)
+        public async Task<IActionResult> SendMessage([FromForm] UserMessage userMessage)
         {
             var directLineToken = await _botService.GetTokenAsync(_appSettings.BotTokenEndpoint);
             using (var directLineClient = new DirectLineClient(directLineToken.Token))
@@ -66,6 +66,7 @@ namespace BotConnectorApp.Controllers
 
     public class UserMessage
     {
+        [FromForm(Name = "Body")]
         public string Message { get; set; }
     }
 
