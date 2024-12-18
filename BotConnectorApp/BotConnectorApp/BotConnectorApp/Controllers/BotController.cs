@@ -22,7 +22,8 @@ namespace BotConnectorApp.Controllers
         }
 
         [HttpPost("sendMessage")]
-        public async Task<IActionResult> SendMessage([FromForm] UserMessage userMessage)
+        [Consumes("application/x-www-form-urlencoded")]
+        public async Task<IActionResult> SendMessage([FromForm] string Body, [FromForm] string From)
         {
             var directLineToken = await _botService.GetTokenAsync(_appSettings.BotTokenEndpoint);
             using (var directLineClient = new DirectLineClient(directLineToken.Token))
@@ -33,8 +34,8 @@ namespace BotConnectorApp.Controllers
                 await directLineClient.Conversations.PostActivityAsync(conversationId, new Activity()
                 {
                     Type = ActivityTypes.Message,
-                    From = new ChannelAccount { Id = "userId", Name = "userName" },
-                    Text = userMessage.Message,
+                    From = new ChannelAccount { Id = From, Name = "userName" },
+                    Text = Body,
                     TextFormat = "plain",
                     Locale = "en-Us",
                 });
@@ -68,6 +69,9 @@ namespace BotConnectorApp.Controllers
     {
         [FromForm(Name = "Body")]
         public string Message { get; set; }
+
+        [FromForm(Name = "From")]
+        public string From { get; set; }
     }
 
     public class AppSettings

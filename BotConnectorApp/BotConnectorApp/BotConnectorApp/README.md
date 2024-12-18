@@ -46,11 +46,14 @@ La aplicación se expondrá en `http://localhost:5000`.
 
 - **URL:** `http://localhost:5000/api/Bot/sendMessage`
 - **Método:** `POST`
-- **Content-Type:** `application/x-www-form-urlencoded`
+- **Content-Type:** `application/json`
 - **Cuerpo de la Solicitud:**
 
-    ```plaintext
-    Body=Tu+mensaje+aqu%C3%AD
+    ```json
+    {
+      "From": "+636931026",
+      "Body": "Hola"
+    }
     ```
 
 - **Respuesta:**
